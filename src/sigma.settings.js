@@ -35,6 +35,8 @@
     // {string}
     defaultLabelColor: '#000',
     // {string}
+    defaultLabelAlignment: 'left',
+    // {string}
     defaultEdgeColor: '#000',
     // {string}
     defaultNodeColor: '#000',

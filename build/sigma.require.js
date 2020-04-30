@@ -9690,7 +9690,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
   labelWidth = context.measureText('W').width * label.length + label.length / 2;
   charWidth = context.measureText('W').width;
   if (!node.direction || node.direction === 'up'){
-    labelPlacementY = Math.round(node[prefix + 'y'] + fontSize - 4) - size - labelWidth;
+    labelPlacementY = Math.round(node[prefix + 'y'] + fontSize - 1) - size - labelWidth;
   } else {
     labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) + size + fontSize;
   }

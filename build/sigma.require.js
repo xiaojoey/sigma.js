@@ -9668,8 +9668,8 @@ sigma.canvas.labels.def = function(node, context, settings) {
 
   if (size < settings('labelThreshold'))
     return;
-
-  if (!node.label || typeof node.label !== 'string')
+  var label = node.sigma_label || node.label;
+  if (!label || typeof label !== 'string')
     return;
 
   if (settings('labelAlignment') === undefined){
@@ -9687,7 +9687,6 @@ sigma.canvas.labels.def = function(node, context, settings) {
   context.fillStyle = (settings('labelColor') === 'node') ?
     (node.color || settings('defaultNodeColor')) :
     settings('defaultLabelColor');
-  var label = node.label.toUpperCase();
   labelWidth = context.measureText(label).width + label.length;
   charWidth = context.measureText(label[0]).width;
   if (!node.direction || node.direction === 'up'){
@@ -9697,7 +9696,6 @@ sigma.canvas.labels.def = function(node, context, settings) {
   }
   // labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) - size - fontSize - labelWidth;
   labelPlacementX = Math.round(node[prefix + 'x'] - charWidth / 2 );
-  console.log(label);
   for (var i = 0; i < label.length; i++){
       context.fillText(
         label.charAt(i),
@@ -9706,7 +9704,6 @@ sigma.canvas.labels.def = function(node, context, settings) {
       );
       labelPlacementY = labelPlacementY + charWidth + 1.5;
   }
-  console.log(node);
 };
 }).call(this);
 

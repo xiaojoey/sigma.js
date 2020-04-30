@@ -2882,7 +2882,7 @@ if (typeof exports !== 'undefined') {
     // {string}
     defaultLabelColor: '#000',
     // {string}
-    defaultLabelAlignment: 'left',
+    defaultLabelAlignment: 'top',
     // {string}
     defaultEdgeColor: '#000',
     // {string}
@@ -2907,7 +2907,7 @@ if (typeof exports !== 'undefined') {
     // {string} The ratio between the font size of the label and the node size.
     labelSizeRatio: 1,
     // {number} The minimum size a node must have to see its label displayed.
-    labelThreshold: 8,
+    labelThreshold: 0,
     // {number} The oversampling factor used in WebGL renderer.
     webglOversamplingRatio: 2,
     // {number} The size of the border of hovered nodes.
@@ -9663,7 +9663,8 @@ sigma.canvas.labels.def = function(node, context, settings) {
       labelWidth = 0,
       labelPlacementX,
       labelPlacementY,
-      alignment;
+      alignment,
+      charWidth;
 
   if (size < settings('labelThreshold'))
     return;
@@ -9676,7 +9677,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
   } else {
     alignment = settings('labelAlignment');
   }
-
+  // context.rotate(-90 * Math.PI / 180);
   fontSize = (settings('labelSize') === 'fixed') ?
     settings('defaultLabelSize') :
     settings('labelSizeRatio') * size;
@@ -9686,45 +9687,26 @@ sigma.canvas.labels.def = function(node, context, settings) {
   context.fillStyle = (settings('labelColor') === 'node') ?
     (node.color || settings('defaultNodeColor')) :
     settings('defaultLabelColor');
-
-  labelWidth = context.measureText(node.label).width;
-  labelPlacementX = Math.round(node[prefix + 'x'] + size + 3);
-  labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3);
-
-  switch (alignment) {
-    case 'inside':
-      if (labelWidth <= size * 2){
-        labelPlacementX = Math.round(node[prefix + 'x'] - labelWidth / 2 );
-      }
-      break;
-    case 'center':
-      labelPlacementX = Math.round(node[prefix + 'x'] - labelWidth / 2 );
-      break;
-    case 'left':
-      labelPlacementX = Math.round(node[prefix + 'x'] - size - labelWidth - 3 );
-      break;
-    case 'right':
-      labelPlacementX = Math.round(node[prefix + 'x'] + size + 3);
-      break;
-    case 'top':
-      labelPlacementX = Math.round(node[prefix + 'x'] - labelWidth / 2 );
-      labelPlacementY = labelPlacementY - size - fontSize;
-      break;
-    case 'bottom':
-      labelPlacementX = Math.round(node[prefix + 'x'] - labelWidth / 2 );
-      labelPlacementY = labelPlacementY + size + fontSize;
-      break;
-    default:
-      // Default is aligned 'right'
-      labelPlacementX = Math.round(node[prefix + 'x'] + size + 3);
-      break;
+  var label = node.label.toUpperCase();
+  labelWidth = context.measureText(label).width + label.length;
+  charWidth = context.measureText(label[0]).width;
+  if (!node.direction || node.direction === 'up'){
+    labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) - size - fontSize - labelWidth;
+  } else {
+    labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) + size + fontSize;
   }
-
-  context.fillText(
-    node.label,
-    labelPlacementX,
-    labelPlacementY
-  );
+  // labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) - size - fontSize - labelWidth;
+  labelPlacementX = Math.round(node[prefix + 'x'] - charWidth / 2 );
+  console.log(label);
+  for (var i = 0; i < label.length; i++){
+      context.fillText(
+        label.charAt(i),
+        labelPlacementX,
+        labelPlacementY
+      );
+      labelPlacementY = labelPlacementY + charWidth + 1.5;
+  }
+  console.log(node);
 };
 }).call(this);
 

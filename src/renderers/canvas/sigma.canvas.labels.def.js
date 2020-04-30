@@ -45,7 +45,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
   context.fillStyle = (settings('labelColor') === 'node') ?
     (node.color || settings('defaultNodeColor')) :
     settings('defaultLabelColor');
-  labelWidth = context.measureText(label).width + label.length;
+  labelWidth = context.measureText('W').width * label.length + label.length / 2;
   charWidth = context.measureText('W').width;
   if (!node.direction || node.direction === 'up'){
     labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) - size - fontSize - labelWidth;
@@ -60,7 +60,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
         labelPlacementX,
         labelPlacementY
       );
-      labelPlacementY = labelPlacementY + charWidth + 1.5;
+      labelPlacementY = labelPlacementY + charWidth;
   }
 };
 }).call(this);

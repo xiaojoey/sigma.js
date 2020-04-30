@@ -46,7 +46,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
     (node.color || settings('defaultNodeColor')) :
     settings('defaultLabelColor');
   labelWidth = context.measureText(label).width + label.length;
-  charWidth = context.measureText(label[0]).width;
+  charWidth = context.measureText('W').width;
   if (!node.direction || node.direction === 'up'){
     labelPlacementY = Math.round(node[prefix + 'y'] + fontSize / 3) - size - fontSize - labelWidth;
   } else {

@@ -42,9 +42,10 @@ sigma.canvas.labels.def = function(node, context, settings) {
 
   context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
     fontSize + 'px ' + settings('font');
-  context.fillStyle = (settings('labelColor') === 'node') ?
+  const orginalStyle = (settings('labelColor') === 'node') ?
     (node.color || settings('defaultNodeColor')) :
     settings('defaultLabelColor');
+  context.fillStyle = 'rgb(200,50,200)';
   labelWidth = context.measureText('W').width * label.length + label.length / 2;
   charWidth = context.measureText('W').width;
   if (!node.direction || node.direction === 'up'){
@@ -65,7 +66,7 @@ sigma.canvas.labels.def = function(node, context, settings) {
       } else{
         labelPlacementY = labelPlacementY + charWidth;
       }
-
+      context.fillStyle = orginalStyle;
   }
 };
 }).call(this);
